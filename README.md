@@ -105,23 +105,31 @@ Your goal is to implement a CI/CD pipeline for the Task Management System:
 2. **Automate Testing and Linting:** (1 points)
    - Configure the pipeline to run backend and frontend tests.
    - Add a linter step to check code quality.
-
+  
+   Tähän voisi lisätä linkin npm workspaces osioon ja myös antaa vinkkiä miten voi job:ssa määritellä kansion missä komento suoritetaan esim.
+    ```  
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm install
+    ```
+   Ei suoraa esimerkkiä mutta mainita working-directory ja laittaa linkki dokumentaatioon.
+   
    **HUOM** Coverage testin ajaminen ja tuloksen vieminen artifactina voisi olla kiva lisä. Täytyy ihmetellä tuota.
 
-3. **Security** (1 points)
+4. **Security** (1 points)
    - Integrate CodeQL analysis in the CI/CD pipeline to automatically scan for vulnerabilities.
    - Add steps to check for outdated or vulnerable dependencies using tools like `npm audit`.
    
    **HUOM** Nyt token on tallennettu selaimen localstorage:en josta varamasti tulee CodeQL hälytys. Tuo pitäisi muuttaa HttpOnly cookieksi.
 
-4. **Docker Integration:** (3 points)
+5. **Docker Integration:** (3 points)
    - Build Docker images for the backend and frontend as part of the pipeline.
    - Optionally, push images to a container registry.
 
-5. **Deployment:** (3 points)
+6. **Deployment:** (3 points)
    - Automate deployment to a cloud service (e.g., Render, Rahti).
 
-6. **Monitoring** (2 points)
+7. **Monitoring** (2 points)
    - SOMETHING SIMPLE HERE
    Bäkkärissä on health check url
    Lokituksen monitorointi?
