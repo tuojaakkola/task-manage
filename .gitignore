@@ -42,3 +42,6 @@ docker-compose.override.yml
 # Database
 *.sqlite
 *.db
+
+# Backend 
+backend/coverage/
