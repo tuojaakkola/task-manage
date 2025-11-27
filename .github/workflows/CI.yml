@@ -56,3 +56,16 @@ jobs:
             # 10 Perform CodeQL analysis
             - name: Perform CodeQL Analysis
               uses: github/codeql-action/analyze@v4
+
+            # 11 Build Docker image for backend
+            - name: Build Backend Docker Image
+              working-directory: ./backend
+              run: docker build -t task-backend:latest .
+
+            # 12 Build Docker image for frontend
+            - name: Build Frontend Docker Image
+              working-directory: ./frontend
+              run: |
+                  docker build \
+                    --build-arg VITE_API_URL=http://localhost:5000/api \
+                    -t task-frontend:latest .

@@ -1,0 +1,7 @@
+# Unnecessary files
+node_modules
+dist
+
+# Secrets
+.env
+.env.local
