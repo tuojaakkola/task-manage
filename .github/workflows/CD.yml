@@ -1,0 +1,50 @@
+name: CD Pipeline
+
+on:
+    push:
+        tags:
+            - "v*.*.*" # Trigger on version tags: v1.0.0, v1.2.3, etc.
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            # 1 Checkout code
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            # 2 Deploy Backend to Render.com
+            - name: Deploy Backend and Frontend
+              run: |
+                  curl -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
+                  curl -X POST "${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}"
+                  echo " Deployments triggered"
+
+            # 3 Wait for deployments to complete
+            - name: Wait for deployment
+              run: |
+                  echo " Waiting 100 seconds for deployments to complete..."
+                  sleep 100
+
+            # 4 Health check Backend
+            - name: Backend Health Check
+              run: |
+                  response=$(curl -s -o /dev/null -w "%{http_code}" https://task-manage-backend-t67w.onrender.com/api/health)
+                  if [ $response -eq 200 ]; then
+                    echo " Backend is healthy (HTTP $response)"
+                  else
+                    echo " Backend health check failed (HTTP $response)"
+                    exit 1
+                  fi
+
+            # 5 Frontend availability check
+            - name: Frontend Availability Check
+              run: |
+                  response=$(curl -s -o /dev/null -w "%{http_code}" https://task-manage-frontend-fee9.onrender.com)
+                  if [ $response -eq 200 ]; then
+                    echo " Frontend is available (HTTP $response)"
+                  else
+                    echo " Frontend check failed (HTTP $response)"
+                    exit 1
+                  fi
